@@ -23,6 +23,11 @@ git clone https://github.com/lytexdev/FileUpload.git
 cd FileUpload
 ```
 
+**Copy and rename `.env.example` to `.env`**
+```bash
+cp .env.example .env
+```
+
 **Build and run the Docker image**
 ```bash
 # with docker-compose-v2
