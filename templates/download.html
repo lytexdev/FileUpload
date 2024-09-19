@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload File > Download</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
     <h1>Download {{ filename }}</h1>
-    <p>{{ info }}</p>
 
     <form method="POST">
+        <p>{{ info }}</p>
+        
         <label for="password">Enter password:</label>
         <input type="password" name="password" required><br><br>
         <input type="submit" value="Download">

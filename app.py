@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory, session, Response
 from models import db, User, File
 from werkzeug.utils import secure_filename
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from dotenv import load_dotenv
 import os
-from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 load_dotenv()
 
