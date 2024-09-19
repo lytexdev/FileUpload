@@ -54,8 +54,8 @@ python3 app.py
 
 ### User Management
 
-- Create a new user: `python user.py create`
-- Delete a user: `python user.py delete`
+- Create a new user: `python3 user.py create`
+- Delete a user: `python3 user.py delete`
 
 ### File Upload
 
@@ -70,4 +70,4 @@ python3 app.py
 - Download a file: navigate to `http://localhost:8080/download/<file_name>` and enter the correct password
 
 ## License
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
