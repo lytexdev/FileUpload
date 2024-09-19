@@ -19,8 +19,8 @@ A Flask-based web application for securely uploading files with user authenticat
 
 **Clone the repository**
 ```bash
-git clone https://github.com/lytexdev/file-upload.git
-cd file-upload
+git clone https://github.com/lytexdev/FileUpload.git
+cd FileUpload
 ```
 
 **Build and run the Docker image**
