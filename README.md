@@ -12,43 +12,26 @@ A Flask-based web application for securely uploading files with user authenticat
 
 ## Installation
 
+### Prerequisites
+- Python 3.11+
+- Docker
+- Docker Compose
+
 **Clone the repository**
 ```bash
 git clone https://github.com/lytexdev/file-upload.git
 cd file-upload
 ```
 
-**Create a virtual environment and activate it:**
+**Build and run the Docker image**
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-# On windows use: .venv\Scripts\activate
+# with docker-compose-v2
+docker compose up -d
+
+# with docker-compose-v1
+docker-compose up -d
 ```
-
-**Install required packages:**
-```bash
-pip install -r requirements.txt
-```
-
-**Copy and rename `.env.example` to `.env`**
-```bash
-cp .env.example .env
-```
-
-**Configure environment variables** Edit the `.env` file to set the following variables:
-
-`FLASK_SECRET_KEY`: a secret key for Flask
-
-`DATABASE_URL`: the URL of the database (e.g. sqlite:///app.db)
-
-`SEARCH_ENGINE_INDEXING`: a boolean value to enable or disable search engine indexing (default: False)
-
-`PORT`: the port to listen on (default: 8080)
-
-**Run application**
-```bash
-python3 app.py
-```
+By default it runs on port 8080
 
 ## Usage
 
