@@ -30,5 +30,12 @@
     </ul>
     {% endif %}
     {% endwith %}
+
+    <footer>
+        <div class="footer-buttons">
+            <a href="{{ url_for('list_files') }}" class="button">View Uploaded Files</a>
+            <a href="{{ url_for('logout') }}" class="button">Logout</a>
+        </div>
+    </footer>
 </body>
 </html>

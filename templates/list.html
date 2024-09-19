@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Files | List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <h1>Uploaded Files</h1>
+
+    {% if files %}
+    <ul>
+        {% for file in files %}
+        <li class="file-list-item">
+            <a href="{{ url_for('download', filename=file.filename) }}">{{ file.filename }}</a> - {{ file.info }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No files have been uploaded yet.</p>
+    {% endif %}
+
+    <footer>
+        <div class="footer-buttons">
+            <a href="{{ url_for('upload') }}" class="button">Upload another file</a>
+            <a href="{{ url_for('logout') }}" class="button">Logout</a>
+        </div>
+    </footer>
+</body>
+</html>

@@ -50,7 +50,6 @@ def login():
                 return redirect(url_for('upload'))
             else:
                 flash('Invalid credentials', 'error')
-
     except SQLAlchemyError as e:
         flash('An error occurred while trying to log in.', 'error')
         app.logger.error(f"Login error: {str(e)}")
@@ -84,7 +83,6 @@ def upload():
 
                 flash('File uploaded successfully!', 'success')
                 return redirect(url_for('upload'))
-
     except IntegrityError:
         db.session.rollback()
         flash('A file with that name already exists.', 'error')
@@ -115,7 +113,6 @@ def download(filename):
                 return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
             else:
                 flash('Incorrect password!', 'error')
-
     except SQLAlchemyError as e:
         flash('An error occurred while trying to access the file.', 'error')
         app.logger.error(f"Download error: {str(e)}")
@@ -124,6 +121,20 @@ def download(filename):
         app.logger.error(f"General error: {str(e)}")
 
     return render_template('download.html', filename=filename, info=file_entry.info)
+
+
+@app.route('/files', methods=['GET'])
+def list_files():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    try:
+        files = File.query.all()
+        return render_template('list.html', files=files)
+    except SQLAlchemyError as e:
+        flash('An error occurred while retrieving the file list.', 'error')
+        app.logger.error(f"File list retrieval error: {str(e)}")
+        return redirect(url_for('upload'))
 
 
 @app.route('/logout')

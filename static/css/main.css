@@ -21,8 +21,7 @@ a {
 }
 
 a:hover {
-    color: #fff;
-    border-bottom: 1px solid #fff;
+    color: #6e0202;
 }
 
 form {
@@ -82,6 +81,10 @@ li {
     text-align: center;
 }
 
+.file-list-item {
+    background-color: #2e2e2e;
+}
+
 button, a.button {
     display: inline-block;
     padding: 10px 20px;
@@ -99,4 +102,15 @@ button, a.button {
 
 button:hover, a.button:hover {
     background-color: #b20000;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+}
+
+.footer-buttons {
+    max-width: 400px;
+    display: flex;
+    gap: 3rem;
 }
