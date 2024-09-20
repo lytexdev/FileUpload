@@ -162,12 +162,19 @@ def robots_txt():
         return Response("Error generating robots.txt", status=500)
 
 
+def init_db():
+    with app.app_context():
+        db.create_all()
+        app.logger.info("Database initialized.")
+
+
+init_db()
+
 if __name__ == '__main__':
     try:
         with app.app_context():
             if not os.path.exists(app.config['UPLOAD_FOLDER']):
                 os.makedirs(app.config['UPLOAD_FOLDER'])
-            db.create_all()
         app.run(debug=os.getenv('DEBUG'), host='0.0.0.0', port=8080)
     except Exception as e:
         app.logger.error(f"App startup error: {str(e)}")
