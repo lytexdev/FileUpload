@@ -7,25 +7,26 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
-    <h1>Login</h1>
-    <form method="POST">
-        <label for="username">Username:</label>
-        <input type="text" name="username" required><br><br>
+    <main id="content">
+        <h1>Login</h1>
+        
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
 
-        <label for="password">Password:</label>
-        <input type="password" name="password" required><br><br>
-
-        <input type="submit" value="Login">
-    </form>
-
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <ul>
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
+        <form method="POST">
+            <label for="username">Username:</label>
+            <input type="text" name="username" required><br><br>
+            <label for="password">Password:</label>
+            <input type="password" name="password" required><br><br>
+            <input type="submit" value="Login">
+        </form>
+    </main>
 </body>
 </html>

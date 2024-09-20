@@ -14,6 +14,12 @@ h1, h2, h3 {
     letter-spacing: 2px;
 }
 
+#content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 a {
     color: #b32020;
     text-decoration: none;
@@ -30,6 +36,7 @@ form {
     margin: 20px auto;
     border-radius: 10px;
     max-width: 400px;
+    min-width: 280px;
 }
 
 label {
@@ -73,7 +80,7 @@ ul {
 }
 
 li {
-    background-color: #b20000;
+    background-color: #681818;
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 5px;

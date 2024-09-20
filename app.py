@@ -62,22 +62,30 @@ def upload():
     try:
         if request.method == 'POST':
             file = request.files['file']
-            password = request.form['password']
-            info = request.form['info']
+            password = request.form.get('password', '')  # Optionales Passwort
+            info = request.form.get('info', '')
 
-            if file and password:
+            if file:
                 filename = secure_filename(file.filename)
 
+                # Überprüfen, ob die Datei bereits in der Datenbank existiert
                 existing_file = File.query.filter_by(filename=filename).first()
                 if existing_file:
-                    flash('File already exists!', 'error')
+                    flash('A file with that name already exists.', 'error')
                     return redirect(url_for('upload'))
 
+                # Speichern der Datei im Upload-Ordner
                 filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 file.save(filepath)
 
+                # Neues Dateiobjekt erstellen und in die Datenbank einfügen
                 new_file = File(filename=filename, info=info)
-                new_file.set_password(password)
+                
+                if password:  # Nur wenn ein Passwort angegeben wurde
+                    new_file.set_password(password)
+                else:
+                    new_file.password_hash = None  # Kein Passwort
+
                 db.session.add(new_file)
                 db.session.commit()
 
@@ -107,12 +115,15 @@ def download(filename):
             return redirect(url_for('upload'))
 
         if request.method == 'POST':
-            password = request.form['password']
+            password = request.form.get('password', '')
 
-            if file_entry.check_password(password):
+            if not file_entry.password_hash or file_entry.check_password(password):
                 return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
             else:
                 flash('Incorrect password!', 'error')
+        elif not file_entry.password_hash:  # Direkter Download ohne Passwort
+            return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
+
     except SQLAlchemyError as e:
         flash('An error occurred while trying to access the file.', 'error')
         app.logger.error(f"Download error: {str(e)}")
@@ -165,7 +176,7 @@ def robots_txt():
 def init_db():
     with app.app_context():
         db.create_all()
-        app.logger.info("Database initialized.")
+        app.logger.info("Database initialized")
 
 
 init_db()

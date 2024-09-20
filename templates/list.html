@@ -7,19 +7,21 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
-    <h1>Uploaded Files</h1>
-
-    {% if files %}
-    <ul>
-        {% for file in files %}
-        <li class="file-list-item">
-            <a href="{{ url_for('download', filename=file.filename) }}">{{ file.filename }}</a> - {{ file.info }}
-        </li>
-        {% endfor %}
-    </ul>
-    {% else %}
-    <p>No files have been uploaded yet.</p>
-    {% endif %}
+    <main id="content">
+        <h1>Uploaded Files</h1>
+        
+        {% if files %}
+        <ul>
+            {% for file in files %}
+            <li class="file-list-item">
+                <a href="{{ url_for('download', filename=file.filename) }}">{{ file.filename }}</a> - {{ file.info }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No files have been uploaded yet.</p>
+        {% endif %}
+    </main>
 
     <footer>
         <div class="footer-buttons">
