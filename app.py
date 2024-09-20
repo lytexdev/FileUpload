@@ -62,29 +62,38 @@ def upload():
     try:
         if request.method == 'POST':
             file = request.files['file']
-            password = request.form.get('password', '')  # Optionales Passwort
+            password = request.form.get('password', '')
             info = request.form.get('info', '')
+            custom_route = request.form.get('custom_route', '') 
 
             if file:
                 filename = secure_filename(file.filename)
-
-                # Überprüfen, ob die Datei bereits in der Datenbank existiert
+                
                 existing_file = File.query.filter_by(filename=filename).first()
                 if existing_file:
                     flash('A file with that name already exists.', 'error')
                     return redirect(url_for('upload'))
 
-                # Speichern der Datei im Upload-Ordner
+                if custom_route:
+                    existing_route = File.query.filter_by(custom_route=custom_route).first()
+                    if existing_route:
+                        flash('A file with that custom route already exists.', 'error')
+                        return redirect(url_for('upload'))
+
                 filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 file.save(filepath)
 
-                # Neues Dateiobjekt erstellen und in die Datenbank einfügen
-                new_file = File(filename=filename, info=info)
+                new_file = File(
+                    filename=filename, 
+                    custom_route=custom_route if custom_route else None, 
+                    info=info,
+                    uploaded_by=session['user_id']
+                )
                 
-                if password:  # Nur wenn ein Passwort angegeben wurde
+                if password:
                     new_file.set_password(password)
                 else:
-                    new_file.password_hash = None  # Kein Passwort
+                    new_file.password_hash = None
 
                 db.session.add(new_file)
                 db.session.commit()
@@ -93,7 +102,7 @@ def upload():
                 return redirect(url_for('upload'))
     except IntegrityError:
         db.session.rollback()
-        flash('A file with that name already exists.', 'error')
+        flash('A file with that name or custom route already exists.', 'error')
     except SQLAlchemyError as e:
         db.session.rollback()
         flash('An error occurred while uploading the file.', 'error')
@@ -105,10 +114,10 @@ def upload():
     return render_template('upload.html')
 
 
-@app.route('/file/<filename>', methods=['GET', 'POST'])
-def download(filename):
+@app.route('/file/<path:route>', methods=['GET', 'POST'])
+def download(route):
     try:
-        file_entry = File.query.filter_by(filename=filename).first()
+        file_entry = File.query.filter((File.custom_route == route) | (File.filename == route)).first()
 
         if not file_entry:
             flash('File not found!', 'error')
@@ -118,11 +127,11 @@ def download(filename):
             password = request.form.get('password', '')
 
             if not file_entry.password_hash or file_entry.check_password(password):
-                return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
+                return send_from_directory(app.config['UPLOAD_FOLDER'], file_entry.filename, as_attachment=True)
             else:
                 flash('Incorrect password!', 'error')
-        elif not file_entry.password_hash:  # Direkter Download ohne Passwort
-            return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
+        elif not file_entry.password_hash:
+            return send_from_directory(app.config['UPLOAD_FOLDER'], file_entry.filename, as_attachment=True)
 
     except SQLAlchemyError as e:
         flash('An error occurred while trying to access the file.', 'error')
@@ -131,7 +140,7 @@ def download(filename):
         flash('An unexpected error occurred.', 'error')
         app.logger.error(f"General error: {str(e)}")
 
-    return render_template('download.html', filename=filename, info=file_entry.info)
+    return render_template('download.html', filename=file_entry.filename, info=file_entry.info)
 
 
 @app.route('/files', methods=['GET'])

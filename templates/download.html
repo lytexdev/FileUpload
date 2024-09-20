@@ -10,14 +10,6 @@
     <main id="content">
         <h1>Download {{ filename }}</h1>
         
-        <form method="POST">
-            <p>{{ info }}</p>
-        
-            <label for="password">Enter password:</label>
-            <input type="password" name="password" required><br><br>
-            <input type="submit" value="Download">
-        </form>
-        
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <ul>
@@ -27,6 +19,12 @@
         </ul>
         {% endif %}
         {% endwith %}
+        
+        <form method="POST">
+            <p>{{ info }}</p><br>
+            <input type="password" name="password" placeholder="Enter password" required><br><br>
+            <input type="submit" value="Download">
+        </form>
     </main>
 </body>
 </html>

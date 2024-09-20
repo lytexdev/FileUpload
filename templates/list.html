@@ -10,7 +10,7 @@
     <main id="content">
         <h1>Uploaded Files</h1>
         
-        {% if files %}
+        {# {% if files %}
         <ul>
             {% for file in files %}
             <li class="file-list-item">
@@ -20,7 +20,27 @@
         </ul>
         {% else %}
         <p>No files have been uploaded yet.</p>
-        {% endif %}
+        {% endif %} #}
+
+
+        <table>
+            <tr>
+                <th>Filename</th>
+                <th>Custom Route</th>
+                <th>Info</th>
+                <th>Uploaded By</th>
+            </tr>
+            {% for file in files %}
+            <tr>
+                <td>{{ file.filename }}</td>
+                <td>{{ file.custom_route if file.custom_route else 'N/A' }}</td>
+                <td>{{ file.info }}</td>
+                <td>{{ file.uploader.username }}</td> <!-- Zeigt den Benutzernamen an -->
+                <td><a href="{{ url_for('download', route=file.custom_route or file.filename) }}">Download</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+
     </main>
 
     <footer>

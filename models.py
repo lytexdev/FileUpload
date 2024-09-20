@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy.orm import relationship
 from dotenv import load_dotenv
 import os
 
@@ -16,6 +17,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
+    files = relationship('File', backref='uploader', lazy=True)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -28,7 +30,9 @@ class File(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     filename = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=True)
+    custom_route = db.Column(db.String(120), unique=True, nullable=True)
     info = db.Column(db.String(200), nullable=True)
+    uploaded_by = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
