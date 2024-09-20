@@ -33,7 +33,7 @@ def require_login():
 
 @app.route('/')
 def index():
-    return redirect(url_for('upload'))
+    return redirect(url_for('list_files'))
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -59,6 +59,9 @@ def login():
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    
     try:
         if request.method == 'POST':
             file = request.files['file']
