@@ -9,19 +9,6 @@
 <body>
     <main id="content">
         <h1>Uploaded Files</h1>
-        
-        {# {% if files %}
-        <ul>
-            {% for file in files %}
-            <li class="file-list-item">
-                <a href="{{ url_for('download', filename=file.filename) }}">{{ file.filename }}</a> - {{ file.info }}
-            </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-        <p>No files have been uploaded yet.</p>
-        {% endif %} #}
-
 
         <table>
             <tr>
@@ -29,18 +16,34 @@
                 <th>Custom Route</th>
                 <th>Info</th>
                 <th>Uploaded By</th>
+                <th>Download</th>
+                <th>Delete</th>
             </tr>
             {% for file in files %}
             <tr>
                 <td>{{ file.filename }}</td>
                 <td>{{ file.custom_route if file.custom_route else 'N/A' }}</td>
                 <td>{{ file.info }}</td>
-                <td>{{ file.uploader.username }}</td> <!-- Zeigt den Benutzernamen an -->
+                <td>{{ file.uploader.username }}</td>
                 <td><a href="{{ url_for('download', route=file.custom_route or file.filename) }}">Download</a></td>
+                <td>
+                    <form method="POST" action="{{ url_for('delete_file', file_id=file.id) }}" style="display:inline;background:unset">
+                        <button type="submit" class="delete-button" title="Delete">
+                            <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M5.73708 6.54391V18.9857C5.73708 19.7449 6.35257 20.3604 7.11182 20.3604H16.8893C17.6485 20.3604 18.264 19.7449 18.264 18.9857V6.54391M2.90906 6.54391H21.0909"
+                                    stroke="#4d4d4d " stroke-width="1.7" stroke-linecap="round" />
+                                <path
+                                    d="M8 6V4.41421C8 3.63317 8.63317 3 9.41421 3H14.5858C15.3668 3 16 3.63317 16 4.41421V6"
+                                    stroke="#4d4d4d" stroke-width="1.7" stroke-linecap="round" />
+                            </svg>
+                        </button>
+                    </form>
+                </td>
             </tr>
             {% endfor %}
         </table>
-
     </main>
 
     <footer>

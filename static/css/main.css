@@ -88,8 +88,48 @@ li {
     text-align: center;
 }
 
-.file-list-item {
-    background-color: #2e2e2e;
+table {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto 2.5rem auto;
+    border-collapse: collapse;
+    background-color: #181818;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 1rem;
+    text-align: left;
+}
+
+th {
+    background-color: #292727;
+    color: #fff;
+    font-weight: bold;
+}
+
+.delete-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    transition: color 0.2s ease;
+}
+
+.delete-button:hover svg {
+    transition: 0.2s ease;
+    stroke: #3d0600;
+}
+
+.delete-button svg {
+    width: 24px;
+    height: 24px;
+    transition: stroke 0.2s ease;
 }
 
 button, a.button {

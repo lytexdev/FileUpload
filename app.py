@@ -86,6 +86,7 @@ def upload():
                 new_file = File(
                     filename=filename, 
                     custom_route=custom_route if custom_route else None, 
+                    file_path=filepath,
                     info=info,
                     uploaded_by=session['user_id']
                 )
@@ -155,6 +156,30 @@ def list_files():
         flash('An error occurred while retrieving the file list.', 'error')
         app.logger.error(f"File list retrieval error: {str(e)}")
         return redirect(url_for('upload'))
+
+
+@app.route('/delete/<int:file_id>', methods=['POST'])
+def delete_file(file_id):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    
+    try:
+        file = File.query.get_or_404(file_id)
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+
+        if os.path.exists(filepath):
+            os.remove(filepath)
+
+        db.session.delete(file)
+        db.session.commit()
+
+        flash(f'File "{file.filename}" deleted successfully!', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash('An error occurred while trying to delete the file.', 'error')
+        app.logger.error(f"Delete error: {str(e)}")
+
+    return redirect(url_for('list_files'))
 
 
 @app.route('/logout')
