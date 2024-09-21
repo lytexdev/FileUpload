@@ -89,7 +89,7 @@ def upload():
                 new_file = File(
                     filename=filename, 
                     custom_route=custom_route if custom_route else None, 
-                    file_path=filepath,
+                    filepath=filepath,
                     info=info,
                     uploaded_by=session['user_id']
                 )
@@ -131,10 +131,16 @@ def download(route):
             password = request.form.get('password', '')
 
             if not file_entry.password_hash or file_entry.check_password(password):
+                file_entry.downloads += 1
+                db.session.commit()
+
                 return send_from_directory(app.config['UPLOAD_FOLDER'], file_entry.filename, as_attachment=True)
             else:
                 flash('Incorrect password!', 'error')
         elif not file_entry.password_hash:
+            file_entry.downloads += 1
+            db.session.commit()
+
             return send_from_directory(app.config['UPLOAD_FOLDER'], file_entry.filename, as_attachment=True)
 
     except SQLAlchemyError as e:

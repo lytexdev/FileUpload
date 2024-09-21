@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Files | List</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
+
 <body>
     <main id="content">
         <h1>Uploaded Files</h1>
@@ -16,8 +18,8 @@
                 <th>Custom Route</th>
                 <th>Info</th>
                 <th>Uploaded By</th>
-                <th>Download</th>
-                <th>Delete</th>
+                <th>Downloads</th>
+                <th>Actions</th>
             </tr>
             {% for file in files %}
             <tr>
@@ -25,18 +27,33 @@
                 <td>{{ file.custom_route if file.custom_route else 'N/A' }}</td>
                 <td>{{ file.info }}</td>
                 <td>{{ file.uploader.username }}</td>
-                <td><a href="{{ url_for('download', route=file.custom_route or file.filename) }}">Download</a></td>
+                <td>{{ file.downloads }}</td>
                 <td>
-                    <form method="POST" action="{{ url_for('delete_file', file_id=file.id) }}" style="display:inline;background:unset">
+                    <a class="copy-link" href="{{ url_for('download', route=file.custom_route or file.file_name) }}">
+                        <button class="copy-link-button">
+                            <svg viewBox="0 0 24 24" width="24px" height="24px" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path
+                                        d="M17 17H17.01M17.4 14H18C18.9319 14 19.3978 14 19.7654 14.1522C20.2554 14.3552 20.6448 14.7446 20.8478 15.2346C21 15.6022 21 16.0681 21 17C21 17.9319 21 18.3978 20.8478 18.7654C20.6448 19.2554 20.2554 19.6448 19.7654 19.8478C19.3978 20 18.9319 20 18 20H6C5.06812 20 4.60218 20 4.23463 19.8478C3.74458 19.6448 3.35523 19.2554 3.15224 18.7654C3 18.3978 3 17.9319 3 17C3 16.0681 3 15.6022 3.15224 15.2346C3.35523 14.7446 3.74458 14.3552 4.23463 14.1522C4.60218 14 5.06812 14 6 14H6.6M12 15V4M12 15L9 12M12 15L15 12"
+                                        stroke="#b1b1b1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </g>
+                            </svg>
+                        </button>
+                    </a>
+
+                    <form method="POST" action="{{ url_for('delete_file', file_id=file.id) }}"
+                        style="display:inline;background:unset">
                         <button type="submit" class="delete-button" title="Delete">
                             <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M5.73708 6.54391V18.9857C5.73708 19.7449 6.35257 20.3604 7.11182 20.3604H16.8893C17.6485 20.3604 18.264 19.7449 18.264 18.9857V6.54391M2.90906 6.54391H21.0909"
-                                    stroke="#4d4d4d " stroke-width="1.7" stroke-linecap="round" />
+                                    stroke="#b1b1b1 " stroke-width="1.7" stroke-linecap="round" />
                                 <path
                                     d="M8 6V4.41421C8 3.63317 8.63317 3 9.41421 3H14.5858C15.3668 3 16 3.63317 16 4.41421V6"
-                                    stroke="#4d4d4d" stroke-width="1.7" stroke-linecap="round" />
+                                    stroke="#b1b1b1" stroke-width="1.7" stroke-linecap="round" />
                             </svg>
                         </button>
                     </form>
@@ -49,8 +66,9 @@
     <footer>
         <div class="footer-buttons">
             <a href="{{ url_for('upload') }}" class="button">Upload another file</a>
-            <a href="{{ url_for('logout') }}" class="button">Logout</a>
+            <a href="{{ url_for('logout') }}" class="button-secondary">Logout</a>
         </div>
     </footer>
 </body>
+
 </html>
