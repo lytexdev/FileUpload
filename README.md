@@ -12,7 +12,6 @@ A Flask-based web application for securely uploading files with user authenticat
 ## Installation
 
 ### Prerequisites
-- Python 3.11+
 - docker-compose
 
 **Clone the repository**
@@ -24,6 +23,11 @@ cd FileUpload
 **Copy and rename `.env.example` to `.env`**
 ```bash
 cp .env.example .env
+```
+
+**Insert a Flask secret key in `.env`**
+```bash
+FLASK_SECRET_KEY=your-secret-key
 ```
 
 **Build and run the Docker image**
@@ -40,8 +44,14 @@ By default it runs on port 8080
 
 ### User Management
 
-- Create a new user: `docker exec -it fileupload-web-1 sh -c "python3 user.py create"`
-- Create a new user: `docker exec -it fileupload-web-1 sh -c "python3 user.py delete"`
+#### Create a new user:
+```bash
+docker exec -it fileupload-web-1 sh -c "python3 user.py create"
+```
+#### Delete a user:
+```bash
+docker exec -it fileupload-web-1 sh -c "python3 user.py delete"
+```
 
 ### File Upload
 
@@ -53,7 +63,7 @@ By default it runs on port 8080
 
 ### Password-Protected Downloads
 
-- Download a file: navigate to `http://localhost:8080/file/<file_name|custom_route>` and enter the correct password
+- Download a file: navigate to `http://localhost:8080/file/<file_name|custom_route>`
 
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
