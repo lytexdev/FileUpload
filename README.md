@@ -7,7 +7,13 @@ A Flask-based web application for securely uploading files with user authenticat
 - **User Authentication:** Only registered users can upload files
 - **Password-Protected Downloads:** Users can download files with a password
 - **File Management:** View a list of all uploaded files (only accessible to logged-in users)
-- **No Search Engine Indexing:** Optional configuration to prevent search engines from indexing the site
+- **Zero JavaScript:** This application is built without any Javascript
+
+----------------------------------------------------
+
+<img src="https://files.lytex.dev/file/fileupload/upload.png" alt="File Upload List" loading="lazy" />
+
+<img src="https://files.lytex.dev/file/fileupload/list.png" alt="File Upload List" loading="lazy" />
 
 ## Installation
 
